@@ -14,42 +14,31 @@
   <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
   <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
   <clouds>
-    <org.jenkinsci.plugins.mesos.MesosCloud plugin="mesos@0.3.0-SNAPSHOT">
+    <org.jenkinsci.plugins.mesos.MesosCloud plugin="mesos@0.6.0-SNAPSHOT">
       <name>MesosCloud</name>
       <nativeLibraryPath>/usr/local/lib/libmesos.so</nativeLibraryPath>
       <master>zk://mesos-master:2181/mesos</master>
       <description></description>
       <frameworkName>Jenkins Scheduler</frameworkName>
-      <slaveAttributes>
-        <nullObject>false</nullObject>
-        <properties class="org.apache.commons.collections.map.ListOrderedMap" serialization="custom">
-          <unserializable-parents/>
-          <org.apache.commons.collections.map.ListOrderedMap>
-            <default>
-              <insertOrder>
-                <string>clusterType</string>
-              </insertOrder>
-            </default>
-            <map>
-              <entry>
-                <string>clusterType</string>
-                <string>jenkinsSlave2</string>
-              </entry>
-            </map>
-          </org.apache.commons.collections.map.ListOrderedMap>
-        </properties>
-      </slaveAttributes>
       <checkpoint>true</checkpoint>
-      <dockerEnabled>true</dockerEnabled>
-      <dockerExecutorPath>/var/lib/mesos/executors/docker2</dockerExecutorPath>
-      <dockerImage>hashish/jenkins-dind</dockerImage>
-      <slaveCpus>0.1</slaveCpus>
-      <slaveMem>128</slaveMem>
-      <executorCpus>0.1</executorCpus>
-      <maxExecutors>2</maxExecutors>
-      <executorMem>32</executorMem>
-      <idleTerminationMinutes>3</idleTerminationMinutes>
-      <labelString>mesos</labelString>
+      <onDemandRegistration>true</onDemandRegistration>
+      <slaveInfos>
+        <org.jenkinsci.plugins.mesos.MesosSlaveInfo>
+          <slaveCpus>0.1</slaveCpus>
+          <slaveMem>512</slaveMem>
+          <executorCpus>0.1</executorCpus>
+          <maxExecutors>2</maxExecutors>
+          <executorMem>64</executorMem>
+          <remoteFSRoot>jenkins</remoteFSRoot>
+          <idleTerminationMinutes>3</idleTerminationMinutes>
+          <jvmArgs>-Xms16m -XX:+UseConcMarkSweepGC -Djava.net.preferIPv4Stack=true</jvmArgs>
+          <containerInfo>
+            <type>DOCKER</type>
+            <dockerImage>hashish/jenkins-dind</dockerImage>
+          </containerInfo>
+          <labelString>mesos</labelString>
+        </org.jenkinsci.plugins.mesos.MesosSlaveInfo>
+      </slaveInfos>
     </org.jenkinsci.plugins.mesos.MesosCloud>
   </clouds>
   <slaves/>
@@ -70,3 +59,5 @@
   <nodeProperties/>
   <globalNodeProperties/>
 </hudson>
+
+
